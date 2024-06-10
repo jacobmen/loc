@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: check-toml
+
+  - repo: local
+    hooks:
+      - id: rustfmt
+        name: Format code
+        description: Check if all files follow the rustfmt style
+        entry: cargo fmt --all
+        language: system
+        pass_filenames: false
+      - id: clippy
+        name: Clippy
+        description: Run clippy on crate
+        entry: env RUSTFLAGS=-Dwarnings cargo clippy --no-deps --all-targets --all-features
+        language: system
+        pass_filenames: false
+      - id: build
+        name: Build
+        description: Build crate
+        entry: cargo build
+        language: system
+        pass_filenames: false
