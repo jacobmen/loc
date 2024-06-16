@@ -45,6 +45,8 @@ jobs:
           components: clippy, rustfmt
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
 
       - name: Install Cross
         if: ${{ matrix.cross-compile }}
