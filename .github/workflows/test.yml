@@ -44,6 +44,10 @@ jobs:
           targets: ${{ matrix.target }}
           components: clippy, rustfmt
 
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
       - name: Install Cross
         if: ${{ matrix.cross-compile }}
         run: cargo install cross --git https://github.com/cross-rs/cross
