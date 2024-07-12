@@ -6,3 +6,4 @@ description = "Command runner for the current working directory"
 
 [dependencies]
 clap = { version = "4.5.8", features = ["derive"] }
+serde = { version = "1.0.203", features = ["derive"] }

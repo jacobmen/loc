@@ -58,4 +58,4 @@ jobs:
         env:
           RUSTFLAGS: -Dwarnings
 
-      - run: ${{ matrix.cross-compile && 'cross' || 'cargo' }} build --target ${{ matrix.target }}
+      - run: ${{ matrix.cross-compile && 'cross' || 'cargo' }} test --target ${{ matrix.target }}

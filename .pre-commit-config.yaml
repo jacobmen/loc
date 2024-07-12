@@ -24,9 +24,9 @@ repos:
         entry: env RUSTFLAGS=-Dwarnings cargo clippy --no-deps --all-features
         language: system
         pass_filenames: false
-      - id: build
-        name: Build
-        description: Build crate
-        entry: cargo build
+      - id: test
+        name: Test
+        description: Test crate
+        entry: cargo test
         language: system
         pass_filenames: false
