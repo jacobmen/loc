@@ -5,5 +5,5 @@ edition = "2021"
 description = "Command runner for the current working directory"
 
 [dependencies]
-clap = { version = "4.5.9", features = ["derive"] }
+clap = { version = "4.5.11", features = ["derive"] }
 serde = { version = "1.0.204", features = ["derive"] }
