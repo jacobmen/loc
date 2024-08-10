@@ -1,4 +1,10 @@
-use std::{collections::HashMap, ffi::OsString, path::PathBuf};
+use std::{
+    collections::HashMap,
+    ffi::OsString,
+    fs::File,
+    io::{self, Read, Write},
+    path::PathBuf,
+};
 
 use serde::{Deserialize, Serialize};
 
@@ -30,6 +36,23 @@ impl SystemCommands {
 
     pub fn remove_dir_commands(&mut self, path: &PathBuf) -> Option<DirectoryCommands> {
         self.dir_commands.remove(path)
+    }
+
+    pub fn save(&self, path: &PathBuf) -> io::Result<()> {
+        let serialized_data = serde_json::to_string(self)?;
+
+        let mut file = File::create(path)?;
+        file.write_all(serialized_data.as_bytes())?;
+        Ok(())
+    }
+
+    pub fn load(path: &PathBuf) -> io::Result<Self> {
+        let mut file = File::open(path)?;
+        let mut content = String::new();
+        file.read_to_string(&mut content)?;
+
+        let commands: Self = serde_json::from_str(&content)?;
+        Ok(commands)
     }
 }
 
