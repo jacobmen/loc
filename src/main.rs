@@ -1,6 +1,7 @@
 use clap::Parser;
 
 mod cli;
+mod paths;
 mod persistence;
 
 fn main() {

@@ -2,10 +2,11 @@ use std::{
     collections::HashMap,
     ffi::OsString,
     fs::File,
-    io::{self, Read, Write},
-    path::PathBuf,
+    io::{Read, Write},
+    path::{Path, PathBuf},
 };
 
+use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 /// Map command key to shell command to execute
@@ -38,7 +39,7 @@ impl SystemCommands {
         self.dir_commands.remove(path)
     }
 
-    pub fn save(&self, path: &PathBuf) -> io::Result<()> {
+    pub fn save<P: AsRef<Path>>(&self, path: P) -> Result<()> {
         let serialized_data = serde_json::to_string(self)?;
 
         let mut file = File::create(path)?;
@@ -46,7 +47,7 @@ impl SystemCommands {
         Ok(())
     }
 
-    pub fn load(path: &PathBuf) -> io::Result<Self> {
+    pub fn load<P: AsRef<Path>>(path: P) -> Result<Self> {
         let mut file = File::open(path)?;
         let mut content = String::new();
         file.read_to_string(&mut content)?;
@@ -58,7 +59,7 @@ impl SystemCommands {
 
 #[cfg(test)]
 mod tests {
-    use std::{env::current_dir, io};
+    use std::env::current_dir;
 
     use super::*;
 
@@ -71,7 +72,7 @@ mod tests {
     }
 
     #[test]
-    fn test_add_and_get() -> Result<(), io::Error> {
+    fn test_add_and_get() -> Result<()> {
         let dir_commands =
             DirectoryCommands::from([("run".to_string(), OsString::from("make run"))]);
         let path = current_dir()?;
@@ -86,7 +87,7 @@ mod tests {
     }
 
     #[test]
-    fn test_remove() -> Result<(), io::Error> {
+    fn test_remove() -> Result<()> {
         let dir_commands =
             DirectoryCommands::from([("run".to_string(), OsString::from("make run"))]);
         let path = current_dir()?;
